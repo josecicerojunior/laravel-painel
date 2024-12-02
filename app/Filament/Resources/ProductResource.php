@@ -13,6 +13,7 @@ use Filament\Tables;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\TextInputColumn;
+use Filament\Tables\Filters\Filter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Str;
@@ -53,7 +54,15 @@ class ProductResource extends Resource
 
             ])
             ->filters([
-                //
+                Filter::make('amount')
+                ->toggle()
+                ->label('Qtd Maior que 9')
+                ->query(fn (Builder $builder) => $builder->where('amount','>', 9)),
+
+                Filter::make('amount_qm')
+                ->toggle()
+                ->label('Qtd menor que 9')
+                ->query(fn (Builder $builder) => $builder->where('amount','<', 9)),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
