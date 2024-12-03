@@ -11,7 +11,9 @@ use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\FileUpload;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextInputColumn;
 use Filament\Tables\Filters\Filter;
 use Illuminate\Database\Eloquent\Builder;
@@ -38,7 +40,8 @@ class ProductResource extends Resource
                 TextInput::make('description')->label('Descrição Produto'),
                 TextInput::make('price')->label('Preço Produto'),
                 TextInput::make('amount')->label('Quantidade Produto'),
-                TextInput::make('slug')->disabled()
+                TextInput::make('slug')->disabled(),
+                FileUpload::make('photo')->directory('products')
             ]);
     }
 
@@ -46,6 +49,8 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
+                ImageColumn::make('photo'),
+                TextColumn::make('id')->sortable(),
                 TextColumn::make('name')->sortable()->searchable(),
                 TextColumn::make('price')->sortable()
                 ->money('BRL'),
