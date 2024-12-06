@@ -10,7 +10,9 @@ use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
+// use Filament\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\FileUpload;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ImageColumn;
@@ -41,7 +43,8 @@ class ProductResource extends Resource
                 TextInput::make('price')->label('Preço Produto'),
                 TextInput::make('amount')->label('Quantidade Produto'),
                 TextInput::make('slug')->disabled(),
-                FileUpload::make('photo')->directory('products')
+                FileUpload::make('photo')->directory('products'),
+                Select::make('categories')->relationship('categories', 'name')->multiple()
             ]);
     }
 
