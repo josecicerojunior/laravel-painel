@@ -32,7 +32,7 @@ class CategoryResource extends Resource
                     $state = Str::slug($state);
                     $set('slug', $state);
                 })
-                    ->label('Nome Produto'),
+                    ->label('Nome Categoria'),
                     TextInput::make('slug')->disabled()
             ]);
     }
