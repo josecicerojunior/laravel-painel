@@ -21,6 +21,7 @@ use Filament\Tables\Filters\Filter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Str;
+use Filament\Resources\RelationManagers\RelationManager;
 
 class ProductResource extends Resource
 {
@@ -44,7 +45,7 @@ class ProductResource extends Resource
                 TextInput::make('amount')->label('Quantidade Produto'),
                 TextInput::make('slug')->disabled(),
                 FileUpload::make('photo')->directory('products'),
-                Select::make('categories')->relationship('categories', 'name')->multiple()
+                // Select::make('categories')->relationship('categories', 'name')->multiple()
             ]);
     }
 
@@ -55,8 +56,7 @@ class ProductResource extends Resource
                 ImageColumn::make('photo'),
                 TextColumn::make('id')->sortable(),
                 TextColumn::make('name')->sortable()->searchable(),
-                TextColumn::make('price')->sortable()
-                ->money('BRL'),
+                TextColumn::make('price')->sortable()->money('BRL'),
                 TextColumn::make('amount'),
                 TextColumn::make('created_at')->date('d/m/Y H:i:s'),
 
@@ -84,7 +84,7 @@ class ProductResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\CategoriesRelationManager::class
         ];
     }
     

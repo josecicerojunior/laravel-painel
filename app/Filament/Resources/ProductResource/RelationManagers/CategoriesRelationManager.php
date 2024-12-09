@@ -9,6 +9,9 @@ use Filament\Resources\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components\TextInput;
+use Illuminate\Support\Str;
 
 class CategoriesRelationManager extends RelationManager
 {
@@ -21,8 +24,16 @@ class CategoriesRelationManager extends RelationManager
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
+                ->reactive()
+                ->afterStateUpdated(function ($state, $set){
+                    $state = Str::slug($state);
+
+                    $set('slug', $state);
+                })             
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->label('Nome Categoria'),
+                    TextInput::make('slug')->disabled(),
             ]);
     }
 
@@ -36,9 +47,11 @@ class CategoriesRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
+                Tables\Actions\AttachAction::make(),
                 Tables\Actions\CreateAction::make(),
             ])
             ->actions([
+                Tables\Actions\DetachAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
