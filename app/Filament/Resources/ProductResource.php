@@ -34,6 +34,7 @@ class ProductResource extends Resource
         return $form
             ->schema([
                 TextInput::make('name')
+                ->required()
                 ->reactive()
                 ->afterStateUpdated(function ($state, $set){
                     $state = Str::slug($state);
