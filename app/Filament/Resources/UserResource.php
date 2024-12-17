@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
+use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
@@ -54,7 +55,26 @@ class UserResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make('charge_password')
+
+            ->form([
+                TextInput::make('password')
+                    ->password()
+                    ->required()
+                ->rule(RulesPassword::default()),
+                TextInput::make('password_confirmation')
+                    ->password()
+                    ->same('password')
+                    ->rule(RulesPassword::default())
             ])
+            ->action(function(User $record, array $data) {
+                $record->update([
+                    'password' => bcrypt($data ['password'])
+                ]);
+                Filament::notify('success', 'Senha atualizado com sucesso!');
+            }),
+
+        ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
