@@ -22,22 +22,25 @@ class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-user-group';
+
+    protected static ?string $navigationGroup = 'admin';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                TextInput::make('name')->required(),
-                TextInput::make('email')->email()->required(),
-                // TextInput::make('password')
-                //     ->password()
-                //     ->required()
-                // ->rule(RulesPassword::default()),
-                // TextInput::make('password_confirmation')
-                //     ->password()
-                //     ->same('password')
-                //     ->rule(RulesPassword::default()),
+                Forms\Components\TextInput::make('name')->required(),
+                Forms\Components\TextInput::make('email')->email()->required(),
+                Forms\Components\TextInput::make('password')
+                    ->password()
+                    ->required()
+                ->rule(RulesPassword::default()),
+                Forms\Components\TextInput::make('password_confirmation')
+                    ->password()
+                    ->same('password')
+                    ->rule(RulesPassword::default()),
+                    Forms\Components\Select::make('role')->relationship('roles', 'name')->multiple()
 
             ]);
     }

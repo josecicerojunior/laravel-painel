@@ -27,7 +27,9 @@ class ProductResource extends Resource
 {
     protected static ?string $model = Product::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationGroup = 'admin';
+
+    protected static ?string $navigationIcon = 'heroicon-o-desktop-computer';
 
     public static function form(Form $form): Form
     {
@@ -81,14 +83,14 @@ class ProductResource extends Resource
             ])
             ->defaultSort('amount', 'DESC');
     }
-    
+
     public static function getRelations(): array
     {
         return [
             RelationManagers\CategoriesRelationManager::class
         ];
     }
-    
+
     public static function getPages(): array
     {
         return [
@@ -96,5 +98,10 @@ class ProductResource extends Resource
             'create' => Pages\CreateProduct::route('/create'),
             'edit' => Pages\EditProduct::route('/{record}/edit'),
         ];
-    }    
+    }
+
+protected static function getNavigationBadge(): ? string
+{
+    return self::getModel()::Count();
+}
 }
