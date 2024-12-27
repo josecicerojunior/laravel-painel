@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
+
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -12,11 +13,27 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
+        $user = \App\Models\User::factory()
+            ->hasOrders(1)
+            ->create();
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        $order = $user->orders->first();
+
+        foreach (\App\Models\Product::orderByRaw('RANDOM()')->take(4)->get() as $prod) {
+            $amount = rand(1, 5);
+
+            $order->items()->create([
+                'product_id' => $prod->id,
+                'amount' => $amount,
+                'order_value' => $prod->price * $amount
+            ]);
+                // \App\Models\User::factory(10)->create();
+
+                // \App\Models\User::factory()->create([
+                //     'name' => 'Test User',
+                //     'email' => 'test@example.com',
+                // ]);
+
+         }
     }
 }

@@ -2,39 +2,33 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\CategoryResource\Pages;
-use App\Filament\Resources\CategoryResource\RelationManagers;
-use App\Models\Category;
+use App\Filament\Resources\OrderResource\Pages;
+use App\Filament\Resources\OrderResource\RelationManagers;
+use App\Models\UserOrder;
 use Filament\Forms;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
-use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Forms\Components\TextInput;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Support\Str;
 
-class CategoryResource extends Resource
+class OrderResource extends Resource
 {
-    protected static ?string $model = Category::class;
+    protected static ?string $model = UserOrder::class;
+    protected static ?int $navigationSort = 2;
+
     protected static ?string $navigationGroup = 'admin';
-    protected static ?int $navigationSort = 4;
-    protected static ?string $navigationIcon = 'heroicon-o-bookmark';
+
+    protected static ?string $navigationIcon = 'heroicon-o-shopping-cart';
 
     public static function form(Form $form): Form
+
     {
         return $form
             ->schema([
-                TextInput::make('name')
-                ->reactive()
-                ->afterStateUpdated(function ($state, $set){
-                    $state = Str::slug($state);
-                    $set('slug', $state);
-                })
-                    ->label('Nome Categoria'),
-                    TextInput::make('slug')->disabled()
+                //
             ]);
     }
 
@@ -43,7 +37,10 @@ class CategoryResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('id')->sortable(),
-                TextColumn::make('name')->sortable()->searchable(),
+                TextColumn::make('user.name')->searchable(),
+                TextColumn::make('items_count')->searchable(),
+                TextColumn::make('created_at')->date('d/h/Y H:i:s'),
+                // TextColumn::make('user.name')->searchable(),
             ])
             ->filters([
                 //
@@ -66,9 +63,9 @@ class CategoryResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListCategories::route('/'),
-            'create' => Pages\CreateCategory::route('/create'),
-            'edit' => Pages\EditCategory::route('/{record}/edit'),
+            'index' => Pages\ListOrders::route('/'),
+            'create' => Pages\CreateOrder::route('/create'),
+            'edit' => Pages\EditOrder::route('/{record}/edit'),
         ];
     }
 }

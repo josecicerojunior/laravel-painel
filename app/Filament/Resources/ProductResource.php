@@ -29,12 +29,16 @@ class ProductResource extends Resource
 
     protected static ?string $navigationGroup = 'admin';
 
+    protected static ?int $navigationSort = 13;
+
     protected static ?string $navigationIcon = 'heroicon-o-desktop-computer';
 
     public static function form(Form $form): Form
     {
         return $form
+
             ->schema([
+                Forms\Components\Fieldset::make('Dados 1')->schema([
                 TextInput::make('name')
                 ->required()
                 ->reactive()
@@ -46,9 +50,12 @@ class ProductResource extends Resource
                 TextInput::make('description')->label('Descrição Produto'),
                 TextInput::make('price')->label('Preço Produto'),
                 TextInput::make('amount')->label('Quantidade Produto'),
+            ]),
+                Forms\Components\Fieldset::make('Dados 2')->schema([
                 TextInput::make('slug')->disabled(),
                 FileUpload::make('photo')->directory('products'),
                 // Select::make('categories')->relationship('categories', 'name')->multiple()
+                ]),
             ]);
     }
 
