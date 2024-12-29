@@ -37,10 +37,16 @@ class OrderResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('id')->sortable(),
-                TextColumn::make('user.name')->searchable(),
+                TextColumn::make('user.name')
+                ->url(
+                    fn (UserOrder $record) =>
+                    UserResource::getUrl('edit', ['record' => $record->user])
+                )
+                ->searchable(),
                 TextColumn::make('items_count')->searchable(),
+                TextColumn::make('orderTotal')->money('BRL'),
                 TextColumn::make('created_at')->date('d/h/Y H:i:s'),
-                // TextColumn::make('user.name')->searchable(),
+
             ])
             ->filters([
                 //

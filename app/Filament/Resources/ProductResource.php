@@ -30,6 +30,7 @@ class ProductResource extends Resource
     protected static ?string $navigationGroup = 'admin';
 
     protected static ?int $navigationSort = 13;
+    protected static ?string $recordTitleAttribute = 'name';
 
     protected static ?string $navigationIcon = 'heroicon-o-desktop-computer';
 
